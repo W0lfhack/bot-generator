@@ -15,7 +15,7 @@ class Generator(nn.Module):
         self.layer3 = nn.Sequential(nn.Linear(in_features=512, out_features=1024),
                                             nn.LeakyReLU())
         self.output = nn.Sequential(nn.Linear(in_features=1024, out_features=28*28),
-                                    nn.LeakyReLU())
+                                    nn.Tanh())
     def forward(self, x):
         x = self.layer1(x)
         x = self.layer2(x)
@@ -34,7 +34,7 @@ class Discriminator(nn.Module):
         self.layer3 = nn.Sequential(nn.Linear(in_features=512, out_features=256),
                                     nn.LeakyReLU())
         self.output = nn.Sequential(nn.Linear(in_features=256, out_features=1),
-                                    nn.LeakyReLU())
+                                    nn.Sigmoid())
 
     def forward(self, x):
         x = self.layer1(x)
