@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import numpy as np
 from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 
@@ -9,12 +10,12 @@ class Generator(nn.Module):
 
         self.model = nn.Sequential(
             nn.Linear(input_size, output_size),
-            nn.ReLU(),
-            nn.Tanh()
+            nn.Tanh(),
         )
 
     def forward(self, x):
         img = self.model(x)
+        print(img.shape)
         return img
 
 def main():
@@ -24,7 +25,9 @@ def main():
 
     print(mnist_trainset)
     print(len(mnist_testset))
-    generator = Generator(100, 28)
+    generator = Generator(100, 784)
+    x = torch.randn(1, 100)
+    generator(x)
 
 if __name__ == "__main__":
     main()
