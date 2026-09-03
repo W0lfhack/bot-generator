@@ -25,10 +25,6 @@ class Generator(nn.Module):
         x = self.output(x)
         return x
 
-    def optimizer(self):
-        optimizerG = self.torch.optim.Adam(self.parameters())
-        return optimizerG
-
 class Discriminator(nn.Module):
     def __init__(self):
         super(Discriminator, self).__init__()
@@ -39,22 +35,14 @@ class Discriminator(nn.Module):
                                     nn.LeakyReLU())
         self.layer3 = nn.Sequential(nn.Linear(in_features=512, out_features=256),
                                     nn.LeakyReLU())
-        self.output = nn.Sequential(nn.Linear(in_features=256, out_features=1),
-                                    nn.Sigmoid(),
-                                    nn.BCELoss())
+        self.output = nn.Sequential(nn.Linear(in_features=256, out_features=1))
                                     
-
     def forward(self, x):
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.output(x)
         return x
-
-        
-    def optimizer(self):
-        optimizerD = self.torch.optim.Adam(self.parameters())
-        return optimizerD
 
 def dataloader():
     transform = v2.Compose([transforms.ToImage(),
@@ -72,8 +60,10 @@ def main():
 
     G = Generator()
     D = Discriminator()
+    loss = nn.BCEWithLogitsLoss()
+    optimizerG = torch.optim.Adam(G.parameters())
+    optimizerG = torch.optim.Adam(D.parameters())
 
-    print(optimizer(G,D))
     
 
 if __name__ == "__main__":
