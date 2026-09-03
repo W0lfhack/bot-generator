@@ -34,7 +34,9 @@ class Discriminator(nn.Module):
         self.layer3 = nn.Sequential(nn.Linear(in_features=512, out_features=256),
                                     nn.LeakyReLU())
         self.output = nn.Sequential(nn.Linear(in_features=256, out_features=1),
-                                    nn.Sigmoid())
+                                    nn.Sigmoid(),
+                                    nn.BCELoss())
+                                    
 
     def forward(self, x):
         x = self.layer1(x)
