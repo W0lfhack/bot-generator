@@ -3,6 +3,7 @@ import torch.nn as nn
 import numpy as np
 from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
+from torch.utils.data import DataLoader
 
 class Generator(nn.Module):
     def __init__(self):
@@ -22,6 +23,10 @@ class Generator(nn.Module):
         x = self.layer3(x)
         x = self.output(x)
         return x
+
+    def optimizer(self):
+            optimizerG = self.torch.optim.Adam(self.parameters())
+            return optimizerG
 
 class Discriminator(nn.Module):
     def __init__(self):
@@ -46,17 +51,22 @@ class Discriminator(nn.Module):
         return x
 
         
-def optimizer(G, D):
-    optimizerG = torch.optim.Adam(G.parameters())
-    optimizerD = torch.optim.Adam(D.parameters())
+    def optimizer(self):
+        optimizerD = self.torch.optim.Adam(self.parameters())
+        return optimizerD
 
-    return (optimizerG, optimizerD)
-
-def main():
+def dataloader():
     transform = transforms.Compose([transforms.ToTensor(),
                                     transforms.Normalize([0.5],[0.5])])
     mnist_trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     mnist_testset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+
+    dataloader_testset = DataLoader(mnist_testset, batch_size=64, shuffle=True)
+    dataloader_trainset = DataLoader(mnist_trainset, batch_size=64, shuffle=True)
+    return (dataloader_testset, dataloader_trainset)
+def main():
+    dataloader_testset = dataloader()[0]
+    dataloader_trainset = dataloader()[1]
 
     G = Generator()
     D = Discriminator()
