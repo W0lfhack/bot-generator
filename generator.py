@@ -4,6 +4,7 @@ import numpy as np
 from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
+from torchvision.transforms import v2
 
 class Generator(nn.Module):
     def __init__(self):
@@ -25,8 +26,8 @@ class Generator(nn.Module):
         return x
 
     def optimizer(self):
-            optimizerG = self.torch.optim.Adam(self.parameters())
-            return optimizerG
+        optimizerG = self.torch.optim.Adam(self.parameters())
+        return optimizerG
 
 class Discriminator(nn.Module):
     def __init__(self):
@@ -56,8 +57,9 @@ class Discriminator(nn.Module):
         return optimizerD
 
 def dataloader():
-    transform = transforms.Compose([transforms.ToTensor(),
-                                    transforms.Normalize([0.5],[0.5])])
+    transform = v2.Compose([transforms.ToImage(),
+                            transforms.ToDtype(torch.float32, scale=True),
+                            transforms.Normalize([0.5,],[0.5,])])
     mnist_trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     mnist_testset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
