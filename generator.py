@@ -44,6 +44,11 @@ class Discriminator(nn.Module):
         return x
 
         
+def optimizer(G, D):
+    optimizerG = torch.optim.Adam(G.parameters())
+    optimizerD = torch.optim.Adam(D.parameters())
+
+    return (optimizerG, optimizerD)
 
 def main():
     transform = transforms.Compose([transforms.ToTensor(),
@@ -51,9 +56,11 @@ def main():
     mnist_trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     mnist_testset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
-    generator = Generator()
-    x = torch.randn(1, 100)
-    generator(x)
+    G = Generator()
+    D = Discriminator()
+
+    print(optimizer(G,D))
+    
 
 if __name__ == "__main__":
     main()
